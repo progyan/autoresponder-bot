@@ -9,8 +9,8 @@ apikey = ""
 botid = ""
 botinfo = ""
 INITSTR = """
-Дальше приведён диалог """
-INITSTR2 = """, далее называемого П с тобой, автоответчиком, далее называемым А.
+Below is a dialog between """
+INITSTR2 = """, who will be shortened as U with you, the autoresponder, who will be shortened as A.
 """
 LOGSTART = """
 
@@ -48,7 +48,7 @@ def constructlogstr(chatid):
     return logstr
 
 def ask(question, chatid):
-    prompt = f'{INITSTR + names[chatid] + INITSTR2 + constructlogstr(chatid)}П: {question}\nА:'
+    prompt = f'{INITSTR + names[chatid] + INITSTR2 + constructlogstr(chatid)}U: {question}\nA:'
     print(prompt)
     response = completion.create(
         prompt=prompt, engine="text-davinci-003", temperature=0.7,
@@ -62,10 +62,10 @@ def getmessage(j, i):
         return False, False
     msginfo = j["result"][i]["message"]
     msg = msginfo["text"]
-    if "П:" in msg or "А:" in msg:
-        os.system("sh ./send.sh " + str(msginfo["chat"]["id"]) + " \"⚠️ [Ошибка при обработке ввода. Попробуйте другой ввод.]\" " + botid)
+    if "U:" in msg or "A:" in msg:
+        os.system("sh ./send.sh " + str(msginfo["chat"]["id"]) + " \"⚠️ [Error when preparing input. Send a different message.]\" " + botid)
         return False, False
-    names[msginfo["chat"]["id"]] = "пользователя " + msginfo["chat"]["first_name"]
+    names[msginfo["chat"]["id"]] = "the user " + msginfo["chat"]["first_name"]
     return msg, msginfo["chat"]["id"]
 
 def getlastmessage():
@@ -102,7 +102,7 @@ with urllib.request.urlopen(link) as f:
             continue
         if chatid not in chat_log.keys():
             chat_log[chatid] = []
-        chat_log[chatid].append(("П", prompt))
+        chat_log[chatid].append(("U", prompt))
 
 while True:
     prompt, chatid = getlastmessage()
@@ -113,7 +113,7 @@ while True:
         answer = ask(prompt, chatid)
         print(prompt)
         print(answer)
-        chat_log[chatid].append(("П", prompt))
-        chat_log[chatid].append(("А", answer))
+        chat_log[chatid].append(("U", prompt))
+        chat_log[chatid].append(("A", answer))
         os.system("sh ./send.sh " + str(chatid) + " \"" + answer.replace("\"", "\\\"") + "\" " + botid)
     time.sleep(1)
