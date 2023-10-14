@@ -4,7 +4,7 @@ The code is not clean. I wrote it for an experiment, so it may be hard to unders
 
 ## Preparation
 Download the files and add three `.txt` files that the program will use:
-- `ar-save.txt` - Leave this file empty, the program will save and recover some data from this file if the program gets reastrted for any reason;
+- `ar-save.txt` - Leave this file empty, the program will save and recover some data from this file if the program gets restarted for any reason;
 - `log.txt` - Leave this file empty too, here you will be able to see what happened with the bot at every minute (or configure it to any other period of time).
 - `keys.txt` - Here you will need to save important configuration information for the server, in this exact order:
   - Line 1: Your OpenAI api key,
